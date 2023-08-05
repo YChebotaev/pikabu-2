@@ -27,6 +27,9 @@ export type Post = {
 
 export type User = {
   username: string
+  sessionId: string
+  passwordHash: string
+  passwordSalt: string
   email: string
   createdAt: number
   updatedAt: number | null

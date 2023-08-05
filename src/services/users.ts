@@ -1,12 +1,11 @@
 import { createHash, randomBytes } from 'node:crypto'
-import { omit } from 'lodash'
 import { usersDb } from '@/db'
 import type { User } from './types'
 
 export const getUser = async (userId: string): Promise<User> => {
   const user = await (await usersDb).get(userId)
 
-  return omit(user, ['passwordHash', 'passwordSalt', 'sessionId'])
+  return user
 }
 
 export const getUserBySessionId = async (sessionId: string) => {
