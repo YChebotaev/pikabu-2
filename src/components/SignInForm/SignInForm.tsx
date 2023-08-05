@@ -7,7 +7,7 @@ export const SignInForm: FC<{
 }> = ({ errorCode, initialIdentity }) => {
   return (
     <div className="bg-slate-100 rounded shadow sm:mx-auto sm:w-full sm:max-w-sm">
-      <h1 className="text-lg font-medium text-center p-4">Регистрация</h1>
+      <h1 className="text-lg font-medium text-center p-4">Вход</h1>
       <form action="/api/auth/signin" method="POST" className="pb-4">
         <div className="px-4 mt-2">
           <label
