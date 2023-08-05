@@ -1,0 +1,14 @@
+.twoColumnsLayout {
+  display: grid;
+  grid-template-columns: 700px 1fr;
+  grid-template-rows: max-content max-content;
+  grid-template-areas: "first-column second-column";
+}
+
+.firstColumn {
+  grid-area: first-column;
+}
+
+.secondColumn {
+  grid-area: second-column;
+}

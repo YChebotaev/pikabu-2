@@ -1,0 +1,89 @@
+#!npx zx
+
+require('dotenv/config')
+const nano = require('nano')(process.env['DATABASE_URL'])
+
+await nano.auth(process.env['DB_USERNAME'], process.env['DB_PASSWORD'])
+
+await nano.db.create('comments')
+await nano.use('comments').createIndex({
+  index: {
+    fields: ['postId']
+  }
+})
+await nano.use('comments').createIndex({
+  index: {
+    fields: ['authorId']
+  }
+})
+await nano.use('comments').createIndex({
+  index: {
+    fields: ['parentId']
+  }
+})
+await nano.use('comments').createIndex({
+  index: {
+    fields: ['createdAt']
+  }
+})
+
+await nano.db.create('posts')
+await nano.use('posts').createIndex({
+  index: {
+    fields: ['authorId']
+  }
+})
+await nano.use('posts').createIndex({
+  index: {
+    fields: ['ribbons']
+  }
+})
+await nano.use('posts').createIndex({
+  index: {
+    fields: ['title']
+  }
+})
+await nano.use('posts').createIndex({
+  index: {
+    fields: ['createdAt']
+  }
+})
+
+await nano.db.create('users')
+await nano.use('users').createIndex({
+  index: {
+    fields: ['sessionId']
+  }
+})
+await nano.use('users').createIndex({
+  index: {
+    fields: ['email']
+  }
+})
+await nano.use('users').createIndex({
+  index: {
+    fields: ['username']
+  }
+})
+
+await nano.db.create('votes')
+await nano.use('votes').createIndex({
+  index: {
+    fields: ['type']
+  }
+})
+await nano.use('votes').createIndex({
+  index: {
+    fields: ['postId']
+  }
+})
+await nano.use('votes').createIndex({
+  index: {
+    fields: ['commentId']
+  }
+})
+await nano.use('votes').createIndex({
+  index: {
+    fields: ['authorId']
+  }
+})
