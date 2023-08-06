@@ -47,7 +47,7 @@ export const Post: FC<{
           <ReactMarkdown>{content.content}</ReactMarkdown>
         )}
       </div>
-      <div className="text-sm text-slate-700">
+      <div className="text-sm text-slate-700 mt-2">
         Написал {author.username} {format(createdAt, "dd.MM.yyyy в HH:mm")} (
         {votesBalance}){" "}
         {authenticated && (
