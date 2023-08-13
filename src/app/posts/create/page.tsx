@@ -29,11 +29,13 @@ export default async function Page({
   return (
     <SiteLayout authenticated>
       <TwoColumnsLayout>
-        <PostCreateForm
-          errorCode={error_code as PostCreateErrorCodes}
-          initialTitle={title}
-          initialContent={content}
-        />
+        <div className="mt-2">
+          <PostCreateForm
+            errorCode={error_code as PostCreateErrorCodes}
+            initialTitle={title}
+            initialContent={content}
+          />
+        </div>
       </TwoColumnsLayout>
     </SiteLayout>
   );

@@ -2,7 +2,9 @@
 
 import { useState, type FC } from "react";
 import ReactMarkdown from "react-markdown";
-import { format } from "date-fns";
+import { formatDistance } from "date-fns";
+import ru from "date-fns/locale/ru";
+import { RatingControl } from "@/components/RatingControl";
 import {
   type User,
   type Content,
@@ -25,28 +27,17 @@ export const Comment: FC<{
   id,
   author,
   content,
-  votesBalance: initialVotesBalance,
+  votesBalance,
   createdAt,
   comments,
   post,
   authenticated,
 }) => {
-  const [votesBalance, setVotesBalance] = useState(initialVotesBalance);
   const [showReplyForm, setShowReplyForm] = useState(false);
-  const createVoteHandler = (rate: number) => async () => {
-    const res = await fetch(`/api/comments/${id}/vote`, {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify({
-        rate,
-      }),
-    });
-    const { newCommentVotesBalance } = (await res.json()) as {
-      newCommentVotesBalance: number;
-    };
-
-    setVotesBalance(newCommentVotesBalance);
-  };
+  const agoDisplayString =
+    formatDistance(new Date(), createdAt, {
+      locale: ru,
+    }) + " назад";
 
   return (
     <div>
@@ -57,26 +48,10 @@ export const Comment: FC<{
       </div>
       <div>
         <div className="text-sm text-slate-700">
-          Написал {author.username} {format(createdAt, "dd.MM.yyyy в HH:mm")} (
-          {votesBalance}){" "}
           {authenticated && (
-            <>
-              <span
-                className="underline cursor-pointer"
-                onClick={createVoteHandler(+1)}
-              >
-                +1
-              </span>{" "}
-              |{" "}
-              <span
-                className="underline cursor-pointer"
-                onClick={createVoteHandler(-1)}
-              >
-                -1
-              </span>{" "}
-              |{" "}
-            </>
-          )}
+            <RatingControl commentId={id} initialRating={votesBalance} />
+          )}{" "}
+          Написал {author.username} {agoDisplayString}{" | "}
           <span
             className="underline cursor-pointer"
             onClick={() => setShowReplyForm(true)}

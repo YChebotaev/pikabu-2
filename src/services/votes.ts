@@ -47,6 +47,19 @@ export const voteForPost = async ({ postId, authorId, rate }: { postId: string, 
   }
 }
 
+export const removeVoteForPost = async ({ postId, authorId }: { postId: string, authorId: string }) => {
+  const { docs: [vote] } = await (await votesDb).find({
+    selector: {
+      postId,
+      authorId
+    }
+  })
+
+  if (vote) {
+    await (await votesDb).destroy(vote._id, vote._rev)
+  }
+}
+
 export const voteForComment = async ({ commentId, authorId, rate }: { commentId: string, authorId: string, rate: number }) => {
   const { docs: [oldVote] } = await (await votesDb).find({
     selector: {
@@ -61,6 +74,8 @@ export const voteForComment = async ({ commentId, authorId, rate }: { commentId:
       rate,
       updatedAt: new Date().getTime()
     })
+
+    return true
   } else {
     const { id } = await (await votesDb).insert({
       type: 'comment',
@@ -71,6 +86,21 @@ export const voteForComment = async ({ commentId, authorId, rate }: { commentId:
       createdAt: new Date().getTime(),
       updatedAt: null
     })
+
+    return true
+  }
+}
+
+export const removeVoteForComment = async ({ commentId, authorId }: { commentId: string, authorId: string }) => {
+  const { docs: [vote] } = await (await votesDb).find({
+    selector: {
+      commentId,
+      authorId
+    }
+  })
+
+  if (vote) {
+    await (await votesDb).destroy(vote._id, vote._rev)
   }
 }
 

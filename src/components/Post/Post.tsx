@@ -1,9 +1,9 @@
-"use client";
-
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import Link from "next/link";
+import ru from "date-fns/locale/ru";
 import ReactMarkdown from "react-markdown";
-import { format } from "date-fns";
+import { formatDistance } from "date-fns";
+import { RatingControl } from "@/components/RatingControl";
 import { type Content, type User } from "@/services";
 
 export const Post: FC<{
@@ -19,25 +19,14 @@ export const Post: FC<{
   title,
   content,
   author,
-  votesBalance: initialVotesBalance,
+  votesBalance,
   createdAt,
   authenticated,
 }) => {
-  const [votesBalance, setVotesBalance] = useState(initialVotesBalance);
-  const createVoteHandler = (rate: number) => async () => {
-    const res = await fetch(`/api/posts/${id}/vote`, {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify({
-        rate,
-      }),
-    });
-    const { newPostVotesBalance } = (await res.json()) as {
-      newPostVotesBalance: number;
-    };
-
-    setVotesBalance(newPostVotesBalance);
-  };
+  const agoDisplayString =
+    formatDistance(new Date(), createdAt, {
+      locale: ru,
+    }) + " назад";
 
   return (
     <div id={id} className="rounded shadow p-2">
@@ -48,26 +37,10 @@ export const Post: FC<{
         )}
       </div>
       <div className="text-sm text-slate-700 mt-2">
-        Написал {author.username} {format(createdAt, "dd.MM.yyyy в HH:mm")} (
-        {votesBalance}){" "}
         {authenticated && (
-          <>
-            <span
-              className="underline cursor-pointer"
-              onClick={createVoteHandler(+1)}
-            >
-              +1
-            </span>{" "}
-            |{" "}
-            <span
-              className="underline cursor-pointer"
-              onClick={createVoteHandler(-1)}
-            >
-              -1
-            </span>{" "}
-            |{" "}
-          </>
-        )}
+          <RatingControl postId={id} initialRating={votesBalance} />
+        )}{" "}
+        Написал {author.username} {agoDisplayString}{" | "}
         <Link href={`/posts/${id}`} className="underline">
           Комментарии
         </Link>

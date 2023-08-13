@@ -8,7 +8,7 @@ export const TopBar: FC<{
   authenticated: boolean;
   linksActive?: "hot" | "fresh";
 }> = ({ authenticated, linksActive }) => (
-  <div className="bg-slate-400">
+  <div className="bg-white shadow">
     <Container className="flex">
       <div className="p-2">
         <Logo />
