@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { SiteLayout, ErrorLayout, TwoColumnsLayout } from "@/layouts";
 import { getFreshPosts, getUserBySessionId } from "@/services";
-import { PostsRibbon } from "@/components";
+import { PersonalControlPanel, PostsRibbon } from "@/components";
 
 export default async function Page({
   searchParams,
@@ -32,11 +32,14 @@ export default async function Page({
     page,
     limit: 30,
   });
+  const authenticated = user != null;
 
   return (
-    <SiteLayout authenticated={user != null} topBarLinksActive="fresh">
+    <SiteLayout authenticated={authenticated} topBarLinksActive="fresh">
       <div className="py-2">
-        <TwoColumnsLayout>
+        <TwoColumnsLayout
+          aside={<>{authenticated && <PersonalControlPanel user={user} />}</>}
+        >
           <PostsRibbon
             page={page}
             ribbon="fresh"

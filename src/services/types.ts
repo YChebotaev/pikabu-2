@@ -26,11 +26,17 @@ export type Post = {
 }
 
 export type User = {
+  _id: string
   username: string
   sessionId: string
   passwordHash: string
   passwordSalt: string
   email: string
+  avatar: {
+    src: string
+  }
+  rating: number
+  followersCount: number
   createdAt: number
   updatedAt: number | null
 }

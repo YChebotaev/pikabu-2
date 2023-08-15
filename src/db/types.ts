@@ -27,6 +27,11 @@ export type User = {
   email: string
   passwordHash: string
   passwordSalt: string
+  avatar: {
+    src: string
+  }
+  rating: number
+  followersCount: number
   createdAt: number
   updatedAt: number | null
 }

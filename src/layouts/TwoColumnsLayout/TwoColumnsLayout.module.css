@@ -3,6 +3,7 @@
   grid-template-columns: 700px 1fr;
   grid-template-rows: max-content max-content;
   grid-template-areas: "first-column second-column";
+  gap: 1.5rem;
 }
 
 .firstColumn {
