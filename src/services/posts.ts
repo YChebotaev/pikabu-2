@@ -36,9 +36,9 @@ export const getHotPosts = async ({ page, limit }: { page: number, limit: number
     },
     sort: [{
       createdAt: 'desc'
-    }]
-    // limit,
-    // skip: page * limit
+    }],
+    limit,
+    skip: page * limit
   })
 
   return Promise.all(docs.map(post => getPost(post._id)))
@@ -55,9 +55,9 @@ export const getFreshPosts = async ({ page, limit }: { page: number, limit: numb
     },
     sort: [{
       createdAt: 'desc'
-    }]
-    // limit,
-    // skip: page * limit
+    }],
+    limit,
+    skip: page * limit
   })
 
   return Promise.all(docs.map(post => getPost(post._id)))

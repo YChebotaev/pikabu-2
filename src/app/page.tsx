@@ -14,8 +14,9 @@ export default async function Page({
   const user = cookiesSessionId
     ? await getUserBySessionId(cookiesSessionId)
     : undefined;
+  const page = Number(searchParams?.page ?? 0);
   const hotPosts = await getHotPosts({
-    page: Number(searchParams?.page ?? 0),
+    page,
     limit: 30,
   });
 
@@ -23,7 +24,12 @@ export default async function Page({
     <SiteLayout authenticated={user != null} topBarLinksActive="hot">
       <div className="py-2">
         <TwoColumnsLayout>
-          <PostsRibbon posts={hotPosts} authenticated={user != null} />
+          <PostsRibbon
+            page={page}
+            ribbon="hot"
+            posts={hotPosts}
+            authenticated={user != null}
+          />
         </TwoColumnsLayout>
       </div>
     </SiteLayout>
