@@ -35,8 +35,17 @@ export type User = {
   avatar: {
     src: string
   }
-  rating: number
+  cover: {
+    src: string
+  }
+  votedUpCount: number
+  votedDownCount: number
   followersCount: number
+  followsCount: number
+  postsCount: {
+    [key: string]: number
+  }
+  rating: number
   createdAt: number
   updatedAt: number | null
 }

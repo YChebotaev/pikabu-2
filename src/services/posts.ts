@@ -63,6 +63,21 @@ export const getFreshPosts = async ({ page, limit }: { page: number, limit: numb
   return Promise.all(docs.map(post => getPost(post._id)))
 }
 
+export const getUserPosts = async (authorId: string, { page, limit }: { page: number, limit: number }) => {
+  const { docs } = await (await postsDb).find({
+    selector: {
+      authorId
+    },
+    sort: [{
+      createdAt: 'desc'
+    }],
+    limit,
+    skip: page * limit
+  })
+
+  return Promise.all(docs.map(post => getPost(post._id)))
+}
+
 export const createPost = async ({ title, authorId, content, ribbons }: { title: string, authorId: string, content: Content, ribbons?: string[] }) => {
   const { id } = await (await postsDb).insert({
     title,

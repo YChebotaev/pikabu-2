@@ -1,6 +1,36 @@
-import { postsDb, votesDb } from '@/db'
+import { postsDb, usersDb, votesDb } from '@/db'
 import { updatePost } from './posts'
 import { uniq } from 'lodash'
+
+const updateUserVotedCount = async (userId: string, direction: 'up' | 'down', rate: 'incr' | 'decr') => {
+  const user = await (await usersDb).get(userId)
+
+  if (direction == 'up') {
+    if (rate === 'incr') {
+      (await usersDb).insert({
+        ...user,
+        votedUpCount: user.votedUpCount + 1
+      })
+    } else if (rate === 'decr') {
+      (await usersDb).insert({
+        ...user,
+        votedUpCount: user.votedUpCount - 1
+      })
+    }
+  } else if (direction === 'down') {
+    if (rate === 'incr') {
+      (await usersDb).insert({
+        ...user,
+        votedDownCount: user.votedUpCount + 1
+      })
+    } else if (rate === 'decr') {
+      (await usersDb).insert({
+        ...user,
+        votedDownCount: user.votedUpCount - 1
+      })
+    }
+  }
+}
 
 export const voteForPost = async ({ postId, authorId, rate }: { postId: string, authorId: string, rate: number }) => {
   const { docs: [oldVote] } = await (await votesDb).find({
@@ -27,6 +57,8 @@ export const voteForPost = async ({ postId, authorId, rate }: { postId: string, 
       updatedAt: null
     })
   }
+
+  await updateUserVotedCount(authorId, rate > 0 ? 'up' : 'down', 'incr')
 
   {
     const post = await (await postsDb).get(postId)
@@ -57,6 +89,8 @@ export const removeVoteForPost = async ({ postId, authorId }: { postId: string, 
 
   if (vote) {
     await (await votesDb).destroy(vote._id, vote._rev)
+
+    await updateUserVotedCount(authorId, vote.rate > 0 ? 'up' : 'down', 'decr')
   }
 }
 
@@ -74,8 +108,6 @@ export const voteForComment = async ({ commentId, authorId, rate }: { commentId:
       rate,
       updatedAt: new Date().getTime()
     })
-
-    return true
   } else {
     const { id } = await (await votesDb).insert({
       type: 'comment',
@@ -86,9 +118,9 @@ export const voteForComment = async ({ commentId, authorId, rate }: { commentId:
       createdAt: new Date().getTime(),
       updatedAt: null
     })
-
-    return true
   }
+
+  await updateUserVotedCount(authorId, rate > 0 ? 'up' : 'down', 'incr')
 }
 
 export const removeVoteForComment = async ({ commentId, authorId }: { commentId: string, authorId: string }) => {
@@ -101,6 +133,8 @@ export const removeVoteForComment = async ({ commentId, authorId }: { commentId:
 
   if (vote) {
     await (await votesDb).destroy(vote._id, vote._rev)
+
+    await updateUserVotedCount(authorId, vote.rate > 0 ? 'up' : 'down', 'decr')
   }
 }
 

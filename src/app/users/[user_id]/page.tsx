@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
-import { getUserBySessionId, getUser } from "@/services";
+import { getUserBySessionId, getUser, getUserPosts } from "@/services";
 import { SiteLayout, TwoColumnsLayout } from "@/layouts";
-import { UserProfile } from "@/components";
+import { UserPostsRibbon, UserProfileDetail } from "@/components";
 
 export default async function Page({
   params: { user_id },
@@ -12,16 +12,21 @@ export default async function Page({
   const sessionUser = cookiesSessionId
     ? await getUserBySessionId(cookiesSessionId)
     : undefined;
+  const authenticated = sessionUser != null;
   const paramUser = await getUser(user_id);
+  const userPosts = await getUserPosts(paramUser._id, { page: 0, limit: 100 });
 
   return (
-    <SiteLayout authenticated={sessionUser != null}>
+    <SiteLayout authenticated={authenticated}>
       <div className="py-2">
         <TwoColumnsLayout>
-          <UserProfile
-            editable={sessionUser?._id === user_id}
+          <UserProfileDetail
             user={paramUser}
+            editable={sessionUser?._id === user_id}
           />
+          <div className="mt-4">
+            <UserPostsRibbon posts={userPosts} authenticated={authenticated} />
+          </div>
         </TwoColumnsLayout>
       </div>
     </SiteLayout>

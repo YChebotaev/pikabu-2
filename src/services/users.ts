@@ -52,8 +52,14 @@ export const registerUser = async ({ username, email, rawPassword }: { username:
     avatar: {
       src: '/avatars/__dummy__.png'
     },
+    cover: {
+      src: '/covers/__dummy__.jpg'
+    },
+    votedUpCount: 0,
+    votedDownCount: 0,
     rating: 0,
     followersCount: 0,
+    bio: '',
     createdAt: new Date().getTime(),
     updatedAt: null
   })

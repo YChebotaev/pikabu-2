@@ -1,4 +1,4 @@
-import { useCallback, useState, type FC } from "react";
+import { type FC } from "react";
 import { type Post as PostType } from "@/services";
 import { Post } from "@/components";
 
