@@ -60,6 +60,11 @@ export const registerUser = async ({ username, email, rawPassword }: { username:
     rating: 0,
     followersCount: 0,
     bio: '',
+    followsCount: 0,
+    postsCount: {
+      fresh: 0,
+      hot: 0,
+    },
     createdAt: new Date().getTime(),
     updatedAt: null
   })

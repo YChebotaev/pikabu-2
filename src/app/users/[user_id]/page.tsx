@@ -1,7 +1,11 @@
 import { cookies } from "next/headers";
 import { getUserBySessionId, getUser, getUserPosts } from "@/services";
 import { SiteLayout, TwoColumnsLayout } from "@/layouts";
-import { UserPostsRibbon, UserProfileDetail } from "@/components";
+import {
+  PersonalControlPanel,
+  UserPostsRibbon,
+  UserProfileDetail,
+} from "@/components";
 
 export default async function Page({
   params: { user_id },
@@ -19,7 +23,11 @@ export default async function Page({
   return (
     <SiteLayout authenticated={authenticated}>
       <div className="py-2">
-        <TwoColumnsLayout>
+        <TwoColumnsLayout
+          aside={
+            <>{authenticated && <PersonalControlPanel user={paramUser} />}</>
+          }
+        >
           <UserProfileDetail
             user={paramUser}
             editable={sessionUser?._id === user_id}
