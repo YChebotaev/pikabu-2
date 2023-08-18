@@ -48,6 +48,11 @@ await nano.use('posts').createIndex({
     fields: ['createdAt']
   }
 })
+await nano.use('posts').createIndex({
+  index: {
+    fields: ['type']
+  }
+})
 
 await nano.db.create('users')
 await nano.use('users').createIndex({

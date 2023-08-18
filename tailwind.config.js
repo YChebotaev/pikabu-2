@@ -2,12 +2,6 @@ const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  theme: {
-    colors: {
-      ...colors,
-      'viva-magenta': '#be3455'
-    }
-  },
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',

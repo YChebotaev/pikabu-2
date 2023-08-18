@@ -1,4 +1,4 @@
-import { postsDb, type Content } from '@/db'
+import { postsDb, type Content, votesDb } from '@/db'
 import { getUser } from './users'
 import { getPostVotesBalance } from './votes'
 import { getCommentsOfPost } from './comments'
@@ -76,6 +76,17 @@ export const getUserPosts = async (authorId: string, { page, limit }: { page: nu
   })
 
   return Promise.all(docs.map(post => getPost(post._id)))
+}
+
+export const getUserPostsVotedFor = async (authorId: string) => {
+  const { docs } = await (await votesDb).find({
+    selector: {
+      type: 'post',
+      authorId
+    }
+  })
+
+  return Promise.all(docs.map(({ postId }) => getPost(postId!)))
 }
 
 export const createPost = async ({ title, authorId, content, ribbons }: { title: string, authorId: string, content: Content, ribbons?: string[] }) => {
