@@ -1,4 +1,5 @@
 export * from './comments'
+export * from './bookmarks'
 export * from './posts'
 export * from './users'
 export * from './votes'

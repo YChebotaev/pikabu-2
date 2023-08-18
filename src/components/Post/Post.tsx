@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { formatDistance } from "date-fns";
 import { RatingControl } from "@/components/RatingControl";
 import { type Content, type User } from "@/services";
+import { BookmarkControl } from "../BookmarkControl";
 
 export const Post: FC<{
   id: string;
@@ -36,11 +37,13 @@ export const Post: FC<{
           <ReactMarkdown>{content.content}</ReactMarkdown>
         )}
       </div>
-      <div className="text-sm text-slate-700 mt-2">
+      <div className="flex gap-2 text-sm text-slate-700 mt-2">
         {authenticated && (
           <RatingControl postId={id} initialRating={votesBalance} />
         )}{" "}
-        Написал {author.username} {agoDisplayString}{" | "}
+        {authenticated && <BookmarkControl postId={id} />} Написал {author.username}{" "}
+        {agoDisplayString}
+        {" | "}
         <Link href={`/posts/${id}`} className="underline">
           Комментарии
         </Link>

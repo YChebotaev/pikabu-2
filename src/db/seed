@@ -92,3 +92,17 @@ await nano.use('votes').createIndex({
     fields: ['authorId']
   }
 })
+
+await nano.db.create('bookmarks')
+await nano.use('bookmarks').createIndex({
+  index: {
+    fields: ['postId']
+  }
+})
+await nano.use('bookmarks').createIndex({
+  index: {
+    fields: ['userId']
+  }
+})
+
+export {}

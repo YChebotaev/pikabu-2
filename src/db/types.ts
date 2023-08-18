@@ -55,3 +55,9 @@ export type Vote = {
   createdAt: number
   updatedAt: number | null
 }
+
+export type Bookmark = {
+  type: 'post'
+  postId: string
+  userId: string
+}

@@ -1,3 +1,4 @@
+export * from './bookmarks'
 export * from './comments'
 export * from './posts'
 export * from './types'
