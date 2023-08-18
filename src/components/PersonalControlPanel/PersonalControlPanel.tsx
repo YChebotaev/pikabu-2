@@ -4,7 +4,17 @@ import { User } from "./User";
 import { Stats } from "./Stats";
 import { Menu } from "./Menu";
 
-export const PersonalControlPanel: FC<{ user: UserType }> = ({ user }) => (
+export const PersonalControlPanel: FC<{
+  user: UserType;
+  menuActiveItem?:
+    | "answers"
+    | "comments"
+    | "liked"
+    | "saved"
+    | "visited"
+    | "subs"
+    | "donations";
+}> = ({ user, menuActiveItem }) => (
   <div className="shadow rounded">
     <div className="p-4">
       <User
@@ -19,7 +29,7 @@ export const PersonalControlPanel: FC<{ user: UserType }> = ({ user }) => (
     </div>
     <hr />
     <div className="p-4">
-      <Menu userId={user._id} />
+      <Menu userId={user._id} activeItem={menuActiveItem} />
     </div>
   </div>
 );

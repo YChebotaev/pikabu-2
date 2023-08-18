@@ -26,6 +26,17 @@ export const getCommentsOfPost = async (postId: string) => {
   return Promise.all(docs.map(comment => getComment(comment._id)))
 }
 
+export const getCommentsOfUser = async (authorId: string) => {
+  const { docs } = await (await commentsDb).find({
+    selector: {
+      authorId
+    },
+    sort: ['createdAt']
+  })
+
+  return Promise.all(docs.map(comment => getComment(comment._id)))
+}
+
 export const getChildrenComments = async (parentId: string) => {
   const { docs } = await (await commentsDb).find({
     selector: {
