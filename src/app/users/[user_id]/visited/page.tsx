@@ -1,5 +1,9 @@
 import { cookies } from "next/headers";
-import { getUserBySessionId, getUser, getUserPostsVotedFor } from "@/services";
+import {
+  getUserBySessionId,
+  getUser,
+  getPostsViewedByUser,
+} from "@/services";
 import { SiteLayout, TwoColumnsLayout } from "@/layouts";
 import {
   PersonalControlPanel,
@@ -17,7 +21,7 @@ export default async function Page({
     : undefined;
   const authenticated = sessionUser != null;
   const paramUser = await getUser(user_id);
-  const posts = await getUserPostsVotedFor(user_id);
+  const posts = await getPostsViewedByUser(user_id);
 
   return (
     <SiteLayout authenticated={authenticated}>
@@ -25,12 +29,12 @@ export default async function Page({
         aside={
           <>
             {authenticated && (
-              <PersonalControlPanel user={paramUser} menuActiveItem="liked" />
+              <PersonalControlPanel user={paramUser} menuActiveItem="visited" />
             )}
           </>
         }
       >
-        <div className="text-2xl">Оценки</div>
+        <div className="text-2xl">Просмотренные посты</div>
         <UserPostsRibbon posts={posts} authenticated={authenticated} />
       </TwoColumnsLayout>
     </SiteLayout>

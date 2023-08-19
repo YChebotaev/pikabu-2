@@ -61,3 +61,9 @@ export type Bookmark = {
   postId: string
   userId: string
 }
+
+export type View = {
+  type: 'post'
+  postId: string
+  userId: string
+}

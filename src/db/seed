@@ -105,4 +105,16 @@ await nano.use('bookmarks').createIndex({
   }
 })
 
+await nano.db.create('views')
+await nano.use('views').createIndex({
+  index: {
+    fields: ['postId']
+  }
+})
+await nano.use('views').createIndex({
+  index: {
+    fields: ['userId']
+  }
+})
+
 export {}

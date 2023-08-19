@@ -12,6 +12,7 @@ export const PostsRibbon: FC<{
     <div className="flex flex-col gap-4">
       {posts.map((post) => (
         <Post
+          trackView
           key={post._id}
           id={post._id}
           title={post.title}

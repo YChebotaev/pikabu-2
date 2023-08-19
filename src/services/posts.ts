@@ -1,4 +1,4 @@
-import { postsDb, type Content, votesDb, bookmarksDb } from '@/db'
+import { postsDb, type Content, votesDb, bookmarksDb, viewsDb } from '@/db'
 import { getUser } from './users'
 import { getPostVotesBalance } from './votes'
 import { getCommentsOfPost } from './comments'
@@ -98,6 +98,17 @@ export const getPostsBookmarkedByUser = async (userId: string) => {
   })
 
   return Promise.all(bookmarks.map(({ postId }) => getPost(postId)))
+}
+
+export const getPostsViewedByUser = async (userId: string) => {
+  const { docs: views } = await (await viewsDb).find({
+    selector: {
+      type: 'post',
+      userId
+    }
+  })
+
+  return Promise.all(views.map(({ postId }) => getPost(postId)))
 }
 
 export const createPost = async ({ title, authorId, content, ribbons }: { title: string, authorId: string, content: Content, ribbons?: string[] }) => {

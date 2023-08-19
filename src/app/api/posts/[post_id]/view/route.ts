@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { getUserBySessionId, addPostToUserBookmarks } from '@/services'
+import { getUserBySessionId, markUserViewedPost } from '@/services'
 
 export const POST = async (req: Request, { params: { post_id } }: { params: { post_id: string } }) => {
   const cookiesSessionId = cookies().get("session_id")?.value;
@@ -8,7 +8,7 @@ export const POST = async (req: Request, { params: { post_id } }: { params: { po
     : undefined;
 
   if (user) {
-    await addPostToUserBookmarks(user._id, post_id)
+    await markUserViewedPost(user._id, post_id)
   }
 
 

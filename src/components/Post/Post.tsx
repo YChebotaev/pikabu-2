@@ -6,6 +6,7 @@ import { formatDistance } from "date-fns";
 import { RatingControl } from "@/components/RatingControl";
 import { type Content, type User } from "@/services";
 import { BookmarkControl } from "../BookmarkControl";
+import { PostViewTracker } from "../PostViewTracker";
 
 export const Post: FC<{
   id: string;
@@ -15,6 +16,7 @@ export const Post: FC<{
   votesBalance: number;
   createdAt: number;
   authenticated: boolean;
+  trackView?: boolean;
 }> = ({
   id,
   title,
@@ -23,6 +25,7 @@ export const Post: FC<{
   votesBalance,
   createdAt,
   authenticated,
+  trackView = false,
 }) => {
   const agoDisplayString =
     formatDistance(new Date(), createdAt, {
@@ -32,6 +35,7 @@ export const Post: FC<{
   return (
     <div id={id} className="rounded shadow p-2">
       <div className="text-lg font-semibold">{title}</div>
+      {trackView && <PostViewTracker postId={id} />}
       <div>
         {content.type === "markdown" && (
           <ReactMarkdown>{content.content}</ReactMarkdown>
@@ -41,8 +45,8 @@ export const Post: FC<{
         {authenticated && (
           <RatingControl postId={id} initialRating={votesBalance} />
         )}{" "}
-        {authenticated && <BookmarkControl postId={id} />} Написал {author.username}{" "}
-        {agoDisplayString}
+        {authenticated && <BookmarkControl postId={id} />} Написал{" "}
+        {author.username} {agoDisplayString}
         {" | "}
         <Link href={`/posts/${id}`} className="underline">
           Комментарии

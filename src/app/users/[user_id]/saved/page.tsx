@@ -7,7 +7,6 @@ import {
 import { SiteLayout, TwoColumnsLayout } from "@/layouts";
 import {
   PersonalControlPanel,
-  UserCommentsList,
   UserPostsRibbon,
 } from "@/components";
 
