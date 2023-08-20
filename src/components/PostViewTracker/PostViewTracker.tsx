@@ -8,21 +8,25 @@ export const PostViewTracker: FC<{ postId: string }> = ({ postId }) => {
     await fetch(`/api/posts/${postId}/view`, { method: "POST" });
   }, [postId]);
   const observer = useMemo(() => {
-    return new IntersectionObserver(
-      ([{ isIntersecting }]) => {
-        trackView();
-      },
-      {
-        rootMargin: "0px",
-        threshold: 1.0,
-      },
-    );
+    if (typeof window !== "undefined") {
+      return new IntersectionObserver(
+        ([{ isIntersecting }]) => {
+          if (isIntersecting) {
+            trackView();
+          }
+        },
+        {
+          rootMargin: "0px",
+          threshold: 1.0,
+        },
+      );
+    }
   }, [trackView]);
 
   useEffect(() => {
     const current = ref.current;
 
-    if (current) {
+    if (current && observer) {
       observer.observe(current);
 
       return () => {

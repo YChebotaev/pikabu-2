@@ -5,6 +5,8 @@ export type SignupErrorCodes =
   | 'username_empty'
   | 'email_empty'
   | 'password_empty'
+  | 'username_taken'
+  | 'email_taken'
 
 export type SigninErrorCodes =
   | 'identity_empty'

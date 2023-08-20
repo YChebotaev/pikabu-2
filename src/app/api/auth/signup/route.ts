@@ -1,6 +1,6 @@
 import { headers, cookies } from 'next/headers'
 import type { SignupErrorCodes } from '@/types'
-import { getUser, registerUser } from '@/services'
+import { getUser, getUserByEmail, getUserByUsername, registerUser } from '@/services'
 import { usersDb } from '@/db'
 
 export const POST = async (req: Request) => {
@@ -47,6 +47,26 @@ export const POST = async (req: Request) => {
       errorCode = 'email_pattern'
 
       break
+    }
+
+    {
+      const user = await getUserByUsername(username)
+
+      if (user != null) {
+        errorCode = 'username_taken'
+
+        break
+      }
+    }
+
+    {
+      const user = await getUserByEmail(email)
+
+      if (user != null) {
+        errorCode = 'email_taken'
+
+        break
+      }
     }
   } while (false)
 

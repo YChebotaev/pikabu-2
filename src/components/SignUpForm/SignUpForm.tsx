@@ -38,6 +38,16 @@ export const SignUpForm: FC<{
                 и/или цифр
               </div>
             )}
+            {errorCode === "username_taken" && (
+              <div className="text-red-600 pt-2 text-sm">
+                Такой пользователь уже существует
+              </div>
+            )}
+            {errorCode === "email_taken" && (
+              <div className="text-red-600 pt-2 text-sm">
+                Кто-то уже зарегистрировался с таким емейлом
+              </div>
+            )}
           </div>
         </div>
         <div className="px-4 mt-2">
