@@ -1,6 +1,7 @@
 export * from './bookmarks'
 export * from './comments'
 export * from './posts'
+export * from './subscriptions'
 export * from './types'
 export * from './users'
 export * from './views'

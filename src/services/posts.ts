@@ -2,6 +2,7 @@ import { postsDb, type Content, votesDb, bookmarksDb, viewsDb } from '@/db'
 import { getUser } from './users'
 import { getPostVotesBalance } from './votes'
 import { getCommentsOfPost } from './comments'
+import { getSubscriptionsOfUser } from './subscriptions'
 import type { Post } from './types'
 
 export const getPost = async (postId: string): Promise<Post> => {
@@ -109,6 +110,12 @@ export const getPostsViewedByUser = async (userId: string) => {
   })
 
   return Promise.all(views.map(({ postId }) => getPost(postId)))
+}
+
+export const getPostsSubscribedByUser = async (userId: string) => {
+  const subscriptions = await getSubscriptionsOfUser(userId)
+
+  return (await Promise.all(subscriptions.map(({ targetUserId }) => getUserPosts(targetUserId, { page: 0, limit: 10000 })))).flat()
 }
 
 export const createPost = async ({ title, authorId, content, ribbons }: { title: string, authorId: string, content: Content, ribbons?: string[] }) => {

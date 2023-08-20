@@ -3,6 +3,7 @@
 import { useState, type FC } from "react";
 import ReactMarkdown from "react-markdown";
 import { formatDistance } from "date-fns";
+import Link from "next/link";
 import ru from "date-fns/locale/ru";
 import { RatingControl } from "@/components/RatingControl";
 import {
@@ -51,7 +52,9 @@ export const Comment: FC<{
           {authenticated && (
             <RatingControl commentId={id} initialRating={votesBalance} />
           )}{" "}
-          Написал {author.username} {agoDisplayString}{" | "}
+          Написал <Link href={`/users/${author._id}`}>{author.username}</Link>{" "}
+          {agoDisplayString}
+          {" | "}
           <span
             className="underline cursor-pointer"
             onClick={() => setShowReplyForm(true)}

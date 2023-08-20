@@ -117,4 +117,16 @@ await nano.use('views').createIndex({
   }
 })
 
+await nano.db.create('subscriptions')
+await nano.use('subscriptions').createIndex({
+  index: {
+    fields: ['userId']
+  }
+})
+await nano.use('subscriptions').createIndex({
+  index: {
+    fields: ['targetUserId']
+  }
+})
+
 export {}

@@ -31,11 +31,5 @@ export const Menu: FC<{
     <Item href={`/users/${userId}/subs`} active={activeItem === "subs"}>
       Подписки
     </Item>
-    <Item
-      href={`/users/${userId}/donations`}
-      active={activeItem === "donations"}
-    >
-      Монетизация
-    </Item>
   </div>
 );

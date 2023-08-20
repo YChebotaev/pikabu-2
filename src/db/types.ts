@@ -67,3 +67,8 @@ export type View = {
   postId: string
   userId: string
 }
+
+export type Subscription = {
+  userId: string
+  targetUserId: string
+}

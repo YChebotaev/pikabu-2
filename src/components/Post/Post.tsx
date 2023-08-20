@@ -46,7 +46,8 @@ export const Post: FC<{
           <RatingControl postId={id} initialRating={votesBalance} />
         )}{" "}
         {authenticated && <BookmarkControl postId={id} />} Написал{" "}
-        {author.username} {agoDisplayString}
+        <Link href={`/users/${author._id}`}>{author.username}</Link>{" "}
+        {agoDisplayString}
         {" | "}
         <Link href={`/posts/${id}`} className="underline">
           Комментарии
