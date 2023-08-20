@@ -6,20 +6,21 @@ import { BookmarkCheckFillIcon, BookmarkIcon } from "../icons";
 export const BookmarkControl: FC<{ postId: string }> = ({ postId }) => {
   const [checked, setChecked] = useState(false);
 
-  const clickHandler = async () => {
-    await fetch(`/api/posts/${postId}/bookmark`, {
-      method: "POST",
-    });
-
-    setChecked(true);
-  };
-
   return (
-    <div
+    <a
+      href="javascript: void (null);"
       className="inline-block rounded bg-slate-200 border border-slate-200 text-xs p-0.5 cursor-pointer"
-      onClick={clickHandler}
+      onClick={async (e) => {
+        e.preventDefault();
+
+        await fetch(`/api/posts/${postId}/bookmark`, {
+          method: "POST",
+        });
+
+        setChecked(true);
+      }}
     >
       {checked ? <BookmarkCheckFillIcon /> : <BookmarkIcon />}
-    </div>
+    </a>
   );
 };

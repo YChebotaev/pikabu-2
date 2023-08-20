@@ -43,11 +43,6 @@ export const SignUpForm: FC<{
                 Такой пользователь уже существует
               </div>
             )}
-            {errorCode === "email_taken" && (
-              <div className="text-red-600 pt-2 text-sm">
-                Кто-то уже зарегистрировался с таким емейлом
-              </div>
-            )}
           </div>
         </div>
         <div className="px-4 mt-2">
@@ -72,6 +67,11 @@ export const SignUpForm: FC<{
             {errorCode === "email_pattern" && (
               <div className="text-red-600 pt-2 text-sm">
                 Некорректный емейл
+              </div>
+            )}
+            {errorCode === "email_taken" && (
+              <div className="text-red-600 pt-2 text-sm">
+                Кто-то уже зарегистрировался с таким емейлом
               </div>
             )}
           </div>

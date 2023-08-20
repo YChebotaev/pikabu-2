@@ -49,24 +49,20 @@ export const POST = async (req: Request) => {
       break
     }
 
-    {
-      const user = await getUserByUsername(username)
+    const userByUsername = await getUserByUsername(username)
 
-      if (user != null) {
-        errorCode = 'username_taken'
+    if (userByUsername != null) {
+      errorCode = 'username_taken'
 
-        break
-      }
+      break
     }
 
-    {
-      const user = await getUserByEmail(email)
+    const userByEmail = await getUserByEmail(email)
 
-      if (user != null) {
-        errorCode = 'email_taken'
+    if (userByEmail != null) {
+      errorCode = 'email_taken'
 
-        break
-      }
+      break
     }
   } while (false)
 
