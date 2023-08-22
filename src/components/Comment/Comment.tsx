@@ -14,6 +14,7 @@ import {
 } from "@/services";
 import { Children } from "./Children";
 import { CommentForm } from "../CommentForm";
+import { AuthorityControl } from "../AuthorityControl";
 
 export const Comment: FC<{
   id: string;
@@ -49,10 +50,14 @@ export const Comment: FC<{
       </div>
       <div>
         <div className="text-sm text-slate-700">
-          {authenticated && (
-            <RatingControl commentId={id} initialRating={votesBalance} />
-          )}{" "}
-          Написал <Link href={`/users/${author._id}`}>{author.username}</Link>{" "}
+          <AuthorityControl
+            authenticated={authenticated}
+            votesBalance={votesBalance}
+            postId={post._id}
+            authorId={author._id}
+            authorUsername={author.username}
+            authorAvatarSrc={author.avatar.src}
+          />
           {agoDisplayString}
           {" | "}
           <span

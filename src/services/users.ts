@@ -53,7 +53,7 @@ export const registerUser = async ({ username, email, rawPassword }: { username:
       src: '/avatars/__dummy__.png'
     },
     cover: {
-      src: '/covers/__dummy__.jpg'
+      src: '/covers/__dummy__.png'
     },
     votedUpCount: 0,
     votedDownCount: 0,
@@ -70,4 +70,26 @@ export const registerUser = async ({ username, email, rawPassword }: { username:
   })
 
   return id
+}
+
+export const updateUserCover = async (userId: string, fileName: string) => {
+  const user = await (await usersDb).get(userId)
+
+  await (await usersDb).insert({
+    ...user,
+    cover: {
+      src: `/covers/${fileName}`
+    }
+  })
+}
+
+export const updateUserAvatar = async (userId: string, fileName: string) => {
+  const user = await (await usersDb).get(userId)
+
+  await (await usersDb).insert({
+    ...user,
+    avatar: {
+      src: `/avatars/${fileName}`
+    }
+  })
 }

@@ -7,6 +7,7 @@ import { RatingControl } from "@/components/RatingControl";
 import { type Content, type User } from "@/services";
 import { BookmarkControl } from "../BookmarkControl";
 import { PostViewTracker } from "../PostViewTracker";
+import { AuthorityControl } from "../AuthorityControl";
 
 export const Post: FC<{
   id: string;
@@ -42,11 +43,14 @@ export const Post: FC<{
         )}
       </div>
       <div className="flex gap-2 text-sm text-slate-700 mt-2">
-        {authenticated && (
-          <RatingControl postId={id} initialRating={votesBalance} />
-        )}{" "}
-        {authenticated && <BookmarkControl postId={id} />} Написал{" "}
-        <Link href={`/users/${author._id}`}>{author.username}</Link>{" "}
+        <AuthorityControl
+          authenticated={authenticated}
+          votesBalance={votesBalance}
+          postId={id}
+          authorId={author._id}
+          authorUsername={author.username}
+          authorAvatarSrc={author.avatar.src}
+        />
         {agoDisplayString}
         {" | "}
         <Link href={`/posts/${id}`} className="underline">

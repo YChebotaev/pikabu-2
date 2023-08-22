@@ -1,6 +1,6 @@
 import { headers, cookies } from 'next/headers'
 import type { SignupErrorCodes } from '@/types'
-import { getUser, getUserByEmail, getUserByUsername, registerUser } from '@/services'
+import { getUserByEmail, getUserByUsername, registerUser } from '@/services'
 import { usersDb } from '@/db'
 
 export const POST = async (req: Request) => {

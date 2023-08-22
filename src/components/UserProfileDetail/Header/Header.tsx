@@ -21,12 +21,12 @@ export const Header: FC<{ editable: boolean; user: User }> = ({
   editable,
 }) => (
   <div className="shadow rounded">
-    <Cover src={user.cover.src} />
+    <Cover src={user.cover.src} editable={editable} userId={user._id} />
     <div
       className="relative"
       style={{ top: "-80px", right: "-20px", height: 0 }}
     >
-      <Avatar src={user.avatar.src} />
+      <Avatar src={user.avatar.src} editable={editable} userId={user._id} />
     </div>
     <div className="mt-11 p-6">
       <Username username={user.username} />
