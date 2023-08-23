@@ -7,6 +7,7 @@ import { Avatar } from "./Avatar";
 import { Username } from "./Username";
 import { VotesCount } from "./VotesCount";
 import { Stats } from "./Stats";
+import { SubscribeButton } from "./SubscribeButton";
 
 const getLogningStr = (dateInt: number) => {
   return (
@@ -16,10 +17,12 @@ const getLogningStr = (dateInt: number) => {
   );
 };
 
-export const Header: FC<{ editable: boolean; user: User }> = ({
-  user,
-  editable,
-}) => (
+export const Header: FC<{
+  editable: boolean;
+  user: User;
+  itsMyself: boolean;
+  iAmSubscribedToUser: boolean;
+}> = ({ user, editable, itsMyself, iAmSubscribedToUser }) => (
   <div className="shadow rounded">
     <Cover src={user.cover.src} editable={editable} userId={user._id} />
     <div
@@ -28,7 +31,15 @@ export const Header: FC<{ editable: boolean; user: User }> = ({
     >
       <Avatar src={user.avatar.src} editable={editable} userId={user._id} />
     </div>
-    <div className="mt-11 p-6">
+    {itsMyself || (
+      <div data-itsmyself={itsMyself} className="p-3 height-0">
+        <div className="float-right">
+          <SubscribeButton subscribed={iAmSubscribedToUser} userId={user._id} />
+        </div>
+        <div className="clearfix" />
+      </div>
+    )}
+    <div className="mt-5 p-6">
       <Username username={user.username} />
       <div>Зарегистрировался {getLogningStr(user.createdAt)}</div>
     </div>

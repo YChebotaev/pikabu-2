@@ -18,7 +18,7 @@ export const userSubscribeToUser = async (userId: string, targetUserId: string) 
   })
 }
 
-export const userUnsubscribeToUser = async (userId: string, targetUserId: string) => {
+export const userUnsubscribeFromUser = async (userId: string, targetUserId: string) => {
   const { docs: [subscription] } = await (await subscriptionsDb).find({
     selector: {
       userId,

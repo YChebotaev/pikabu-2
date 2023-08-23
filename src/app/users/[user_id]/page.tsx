@@ -1,5 +1,10 @@
 import { cookies } from "next/headers";
-import { getUserBySessionId, getUser, getUserPosts } from "@/services";
+import {
+  getUserBySessionId,
+  getUser,
+  getUserPosts,
+  userHaveSubscribedToUser,
+} from "@/services";
 import { SiteLayout, TwoColumnsLayout } from "@/layouts";
 import {
   PersonalControlPanel,
@@ -19,6 +24,11 @@ export default async function Page({
   const authenticated = sessionUser != null;
   const paramUser = await getUser(user_id);
   const userPosts = await getUserPosts(paramUser._id, { page: 0, limit: 100 });
+  const iAmSubscribedToUser =
+    sessionUser != null && sessionUser._id !== paramUser._id
+      ? await userHaveSubscribedToUser(sessionUser._id, paramUser._id)
+      : false;
+  const itsMyself = sessionUser?._id === paramUser._id
 
   return (
     <SiteLayout authenticated={authenticated}>
@@ -31,6 +41,8 @@ export default async function Page({
           <UserProfileDetail
             user={paramUser}
             editable={sessionUser?._id === user_id}
+            itsMyself={itsMyself}
+            iAmSubscribedToUser={iAmSubscribedToUser}
           />
           <div className="mt-4">
             <UserPostsRibbon posts={userPosts} authenticated={authenticated} />
