@@ -3,9 +3,7 @@ import Link from "next/link";
 import ru from "date-fns/locale/ru";
 import ReactMarkdown from "react-markdown";
 import { formatDistance } from "date-fns";
-import { RatingControl } from "@/components/RatingControl";
 import { type Content, type User } from "@/services";
-import { BookmarkControl } from "../BookmarkControl";
 import { PostViewTracker } from "../PostViewTracker";
 import { AuthorityControl } from "../AuthorityControl";
 
@@ -18,6 +16,9 @@ export const Post: FC<{
   createdAt: number;
   authenticated: boolean;
   trackView?: boolean;
+  commentsCount: number | null
+  bookmarkedByMe: boolean | null
+  votedByMe: boolean | null
 }> = ({
   id,
   title,
@@ -27,6 +28,9 @@ export const Post: FC<{
   createdAt,
   authenticated,
   trackView = false,
+  commentsCount,
+  bookmarkedByMe,
+  votedByMe
 }) => {
   const agoDisplayString =
     formatDistance(new Date(), createdAt, {
@@ -50,11 +54,13 @@ export const Post: FC<{
           authorId={author._id}
           authorUsername={author.username}
           authorAvatarSrc={author.avatar.src}
+          votedByMe={votedByMe}
+          bookmarkedByMe={bookmarkedByMe}
         />
         {agoDisplayString}
         {" | "}
         <Link href={`/posts/${id}`} className="underline">
-          Комментарии
+          Комментарии ({commentsCount})
         </Link>
       </div>
     </div>

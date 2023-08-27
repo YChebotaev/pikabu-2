@@ -32,6 +32,17 @@ const updateUserVotedCount = async (userId: string, direction: 'up' | 'down', ra
   }
 }
 
+export const getUserHasVotedForPost = async (postId: string, userId: string) => {
+  const { docs: [vote] } = await (await votesDb).find({
+    selector: {
+      postId,
+      authorId: userId
+    }
+  })
+
+  return vote != null
+}
+
 export const voteForPost = async ({ postId, authorId, rate }: { postId: string, authorId: string, rate: number }) => {
   const { docs: [oldVote] } = await (await votesDb).find({
     selector: {

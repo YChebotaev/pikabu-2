@@ -26,7 +26,7 @@ export const POST = async (req: Request) => {
       break
     }
 
-    const maybeExistingPost = await getPostByTitle(title)
+    const maybeExistingPost = await getPostByTitle(title, user._id)
 
     if (maybeExistingPost != null) {
       errorCode = 'title_exists'

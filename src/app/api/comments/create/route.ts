@@ -14,8 +14,6 @@ export const POST = async (req: Request) => {
   const content = String(formData.get('content')!)
   let errorCode: CommentCreateErrorCodes | undefined = undefined
 
-  console.log(17)
-
   do {
     if (user == null) {
       errorCode = 'not_authenticated'
@@ -30,9 +28,6 @@ export const POST = async (req: Request) => {
     }
   } while (false)
 
-  console.log('postId =', postId)
-  console.log('parentId =', parentId)
-
   if (errorCode) {
     const redirectURL = new URL(`/posts/${postId}`, origin)
 
@@ -41,8 +36,6 @@ export const POST = async (req: Request) => {
     }
 
     redirectURL.searchParams.set('error_code', errorCode)
-
-    console.log(44)
 
     return Response.redirect(redirectURL)
   } else {
@@ -59,8 +52,6 @@ export const POST = async (req: Request) => {
     const redirectURL = new URL(`/posts/${postId}`, origin)
 
     redirectURL.searchParams.set('highlighted_comment', commentId)
-
-    console.log(62)
 
     return Response.redirect(redirectURL)
   }

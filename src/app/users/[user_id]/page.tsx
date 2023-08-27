@@ -23,7 +23,7 @@ export default async function Page({
     : undefined;
   const authenticated = sessionUser != null;
   const paramUser = await getUser(user_id);
-  const userPosts = await getUserPosts(paramUser._id, { page: 0, limit: 100 });
+  const userPosts = await getUserPosts(paramUser._id, { page: 0, limit: 100, userId: sessionUser?._id });
   const iAmSubscribedToUser =
     sessionUser != null && sessionUser._id !== paramUser._id
       ? await userHaveSubscribedToUser(sessionUser._id, paramUser._id)

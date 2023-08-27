@@ -13,7 +13,7 @@ export default async function Page({
   const user = cookiesSessionId
     ? await getUserBySessionId(cookiesSessionId)
     : undefined;
-  const post = await getPost(post_id);
+  const post = await getPost(post_id, user?._id);
 
   if (post == null) {
     return <ErrorLayout>Такого поста нет</ErrorLayout>;
@@ -31,6 +31,9 @@ export default async function Page({
             votesBalance={post.votesBalance}
             createdAt={post.createdAt}
             authenticated={user != null}
+            commentsCount={post.commentsCount}
+            bookmarkedByMe={post.bookmarkedByMe}
+            votedByMe={post.votedByMe}
           />
           <div className="mt-2">
             <PostComments

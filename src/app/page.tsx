@@ -18,6 +18,7 @@ export default async function Page({
   const hotPosts = await getHotPosts({
     page,
     limit: 30,
+    userId: user?._id
   });
   const authenticated = user != null;
 

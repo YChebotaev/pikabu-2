@@ -7,7 +7,8 @@ export const RatingControl: FC<{
   initialRating: number;
   commentId?: string;
   postId?: string;
-}> = ({ initialRating, postId, commentId }) => {
+  voted: boolean | null
+}> = ({ initialRating, postId, commentId, voted }) => {
   const [rating, setRating] = useState(initialRating);
   const createVoteHandler = (rate: number) => async () => {
     if (postId) {

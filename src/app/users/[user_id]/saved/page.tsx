@@ -21,7 +21,7 @@ export default async function Page({
     : undefined;
   const authenticated = sessionUser != null;
   const paramUser = await getUser(user_id);
-  const posts = await getPostsBookmarkedByUser(user_id);
+  const posts = await getPostsBookmarkedByUser(user_id, sessionUser?._id);
 
   return (
     <SiteLayout authenticated={authenticated}>

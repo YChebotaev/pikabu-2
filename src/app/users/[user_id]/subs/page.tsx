@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import {
   getUserBySessionId,
   getUser,
-  getPostsBookmarkedByUser,
   getPostsSubscribedByUser,
 } from "@/services";
 import { SiteLayout, TwoColumnsLayout } from "@/layouts";
@@ -19,7 +18,7 @@ export default async function Page({
     : undefined;
   const authenticated = sessionUser != null;
   const paramUser = await getUser(user_id);
-  const posts = await getPostsSubscribedByUser(user_id);
+  const posts = await getPostsSubscribedByUser(user_id, sessionUser?._id);
 
   return (
     <SiteLayout authenticated={authenticated}>

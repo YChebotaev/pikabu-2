@@ -17,6 +17,9 @@ export const UserPostsRibbon: FC<{
         content={post.content}
         author={post.author}
         authenticated={authenticated}
+        commentsCount={post.commentsCount}
+        bookmarkedByMe={post.bookmarkedByMe}
+        votedByMe={post.votedByMe}
       />
     ))}
   </div>

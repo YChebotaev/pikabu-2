@@ -14,7 +14,7 @@ export const getComment = async (commentId: string): Promise<Comment> => {
   }
 }
 
-export const getCommentsOfPost = async (postId: string) => {
+export const getRootCommentsOfPost = async (postId: string) => {
   const { docs } = await (await commentsDb).find({
     selector: {
       postId,
@@ -24,6 +24,16 @@ export const getCommentsOfPost = async (postId: string) => {
   })
 
   return Promise.all(docs.map(comment => getComment(comment._id)))
+}
+
+export const getCommentsCountOfPost = async (postId: string) => {
+  const { docs } = await (await commentsDb).find({
+    selector: {
+      postId
+    }
+  })
+
+  return docs ? docs.length : 0
 }
 
 export const getCommentsOfUser = async (authorId: string) => {

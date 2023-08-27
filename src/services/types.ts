@@ -21,6 +21,9 @@ export type Post = {
   votesBalance: number
   ribbons: string[] | null
   comments: Comment[]
+  commentsCount: number
+  bookmarkedByMe: boolean | null
+  votedByMe: boolean | null
   createdAt: number
   updatedAt: number | null
 }

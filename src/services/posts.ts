@@ -1,32 +1,36 @@
 import { postsDb, type Content, votesDb, bookmarksDb, viewsDb } from '@/db'
 import { getUser } from './users'
-import { getPostVotesBalance } from './votes'
-import { getCommentsOfPost } from './comments'
+import { getPostVotesBalance, getUserHasVotedForPost } from './votes'
+import { getRootCommentsOfPost, getCommentsCountOfPost } from './comments'
 import { getSubscriptionsOfUser } from './subscriptions'
+import { hasPostBookmarkedByUser } from './bookmarks'
 import type { Post } from './types'
 
-export const getPost = async (postId: string): Promise<Post> => {
+export const getPost = async (postId: string, userId?: string): Promise<Post> => {
   const data = await (await postsDb).get(postId)
 
   return {
     ...data,
     votesBalance: await getPostVotesBalance(postId),
     author: await getUser(data.authorId),
-    comments: await getCommentsOfPost(postId)
+    comments: await getRootCommentsOfPost(postId),
+    commentsCount: await getCommentsCountOfPost(postId),
+    bookmarkedByMe: userId ? await hasPostBookmarkedByUser(userId, postId) : null,
+    votedByMe: userId ? await getUserHasVotedForPost(postId, userId) : null
   }
 }
 
-export const getPostByTitle = async (title: string): Promise<Post | undefined> => {
+export const getPostByTitle = async (title: string, userId?: string): Promise<Post | undefined> => {
   const { docs: [post] } = await (await postsDb).find({
     selector: {
       title
     }
   })
 
-  return post ? getPost(post._id) : undefined
+  return post ? getPost(post._id, userId) : undefined
 }
 
-export const getHotPosts = async ({ page, limit }: { page: number, limit: number }) => {
+export const getHotPosts = async ({ page, limit, userId }: { page: number, limit: number, userId?: string }) => {
   const { docs } = await (await postsDb).find({
     selector: {
       ribbon: {
@@ -42,10 +46,10 @@ export const getHotPosts = async ({ page, limit }: { page: number, limit: number
     skip: page * limit
   })
 
-  return Promise.all(docs.map(post => getPost(post._id)))
+  return Promise.all(docs.map(post => getPost(post._id, userId)))
 }
 
-export const getFreshPosts = async ({ page, limit }: { page: number, limit: number }) => {
+export const getFreshPosts = async ({ page, limit, userId }: { page: number, limit: number, userId?: string }) => {
   const { docs } = await (await postsDb).find({
     selector: {
       ribbons: {
@@ -61,10 +65,10 @@ export const getFreshPosts = async ({ page, limit }: { page: number, limit: numb
     skip: page * limit
   })
 
-  return Promise.all(docs.map(post => getPost(post._id)))
+  return Promise.all(docs.map(post => getPost(post._id, userId)))
 }
 
-export const getUserPosts = async (authorId: string, { page, limit }: { page: number, limit: number }) => {
+export const getUserPosts = async (authorId: string, { page, limit, userId }: { page: number, limit: number, userId?: string }) => {
   const { docs } = await (await postsDb).find({
     selector: {
       authorId
@@ -76,10 +80,10 @@ export const getUserPosts = async (authorId: string, { page, limit }: { page: nu
     skip: page * limit
   })
 
-  return Promise.all(docs.map(post => getPost(post._id)))
+  return Promise.all(docs.map(post => getPost(post._id, userId)))
 }
 
-export const getUserPostsVotedFor = async (authorId: string) => {
+export const getUserPostsVotedFor = async (authorId: string, userId?: string) => {
   const { docs } = await (await votesDb).find({
     selector: {
       type: 'post',
@@ -87,10 +91,10 @@ export const getUserPostsVotedFor = async (authorId: string) => {
     }
   })
 
-  return Promise.all(docs.map(({ postId }) => getPost(postId!)))
+  return Promise.all(docs.map(({ postId }) => getPost(postId!, userId)))
 }
 
-export const getPostsBookmarkedByUser = async (userId: string) => {
+export const getPostsBookmarkedByUser = async (userId: string, authorityUserId?: string) => {
   const { docs: bookmarks } = await (await bookmarksDb).find({
     selector: {
       type: 'post',
@@ -98,10 +102,10 @@ export const getPostsBookmarkedByUser = async (userId: string) => {
     }
   })
 
-  return Promise.all(bookmarks.map(({ postId }) => getPost(postId)))
+  return Promise.all(bookmarks.map(({ postId }) => getPost(postId, authorityUserId)))
 }
 
-export const getPostsViewedByUser = async (userId: string) => {
+export const getPostsViewedByUser = async (userId: string, authorityUserId?: string) => {
   const { docs: views } = await (await viewsDb).find({
     selector: {
       type: 'post',
@@ -109,13 +113,13 @@ export const getPostsViewedByUser = async (userId: string) => {
     }
   })
 
-  return Promise.all(views.map(({ postId }) => getPost(postId)))
+  return Promise.all(views.map(({ postId }) => getPost(postId, authorityUserId)))
 }
 
-export const getPostsSubscribedByUser = async (userId: string) => {
+export const getPostsSubscribedByUser = async (userId: string, authorityUserId?: string) => {
   const subscriptions = await getSubscriptionsOfUser(userId)
 
-  return (await Promise.all(subscriptions.map(({ targetUserId }) => getUserPosts(targetUserId, { page: 0, limit: 10000 })))).flat()
+  return (await Promise.all(subscriptions.map(({ targetUserId }) => getUserPosts(targetUserId, { page: 0, limit: 10000, userId: authorityUserId })))).flat()
 }
 
 export const createPost = async ({ title, authorId, content, ribbons }: { title: string, authorId: string, content: Content, ribbons?: string[] }) => {

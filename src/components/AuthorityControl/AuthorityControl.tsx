@@ -1,7 +1,7 @@
 import { type FC } from "react";
 import Link from "next/link";
 import { Username } from "./Username";
-import { RatingControl } from "../RatingControl"
+import { RatingControl } from "../RatingControl";
 import { BookmarkControl } from "../BookmarkControl";
 
 export const AuthorityControl: FC<{
@@ -11,6 +11,8 @@ export const AuthorityControl: FC<{
   authorId: string;
   authorUsername: string;
   authorAvatarSrc: string;
+  bookmarkedByMe: boolean | null;
+  votedByMe: boolean | null;
 }> = ({
   authenticated,
   votesBalance,
@@ -18,12 +20,18 @@ export const AuthorityControl: FC<{
   authorId,
   authorUsername,
   authorAvatarSrc,
+  bookmarkedByMe,
+  votedByMe,
 }) => (
   <div className="flex gap-2 text-sm text-slate-700">
     {authenticated && (
-      <RatingControl postId={postId} initialRating={votesBalance} />
+      <RatingControl
+        voted={votedByMe}
+        postId={postId}
+        initialRating={votesBalance}
+      />
     )}{" "}
-    {authenticated && <BookmarkControl postId={postId} />} Написал{" "}
+    {authenticated && <BookmarkControl bookmarked={bookmarkedByMe} postId={postId} />} Написал{" "}
     <Username
       id={authorId}
       username={authorUsername}

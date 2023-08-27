@@ -31,6 +31,7 @@ export default async function Page({
   const freshPosts = await getFreshPosts({
     page,
     limit: 30,
+    userId: user._id
   });
   const authenticated = user != null;
 
