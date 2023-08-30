@@ -8,7 +8,9 @@ export const RatingControl: FC<{
   commentId?: string;
   postId?: string;
   voted: boolean | null
-}> = ({ initialRating, postId, commentId, voted }) => {
+  plusRate: number
+  minusRate: number
+}> = ({ initialRating, postId, commentId, voted, plusRate, minusRate }) => {
   const [rating, setRating] = useState(initialRating);
   const createVoteHandler = (rate: number) => async () => {
     if (postId) {
@@ -40,14 +42,14 @@ export const RatingControl: FC<{
     <div className="inline-flex gap-1 rounded bg-slate-200 border border-slate-200 text-xs">
       <button
         className="px-1 rounded font-bold hover:bg-slate-300"
-        onClick={createVoteHandler(1)}
+        onClick={createVoteHandler(plusRate)}
       >
         <PlusIcon />
       </button>
       <div className="rounded px-2 bg-slate-50">{rating}</div>
       <button
         className="px-1 rounded font-bold hover:bg-slate-300"
-        onClick={createVoteHandler(-1)}
+        onClick={createVoteHandler(minusRate)}
       >
         <MinusIcon />
       </button>

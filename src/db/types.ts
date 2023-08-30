@@ -33,15 +33,7 @@ export type User = {
   cover: {
     src: string
   }
-  rating: number
-  followersCount: number
-  followsCount: number
-  postsCount: {
-    [key: string]: number
-  }
   bio: string
-  votedUpCount: number
-  votedDownCount: number
   createdAt: number
   updatedAt: number | null
 }

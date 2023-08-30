@@ -75,6 +75,16 @@ export const getUserResponsesForAllComments = async (authorId: string) => {
   return commentsResponses.flat()
 }
 
+export const getAllUserComments = async (authorId: string) => {
+  const { docs } = await (await commentsDb).find({
+    selector: {
+      authorId
+    }
+  })
+
+  return docs
+}
+
 export const createComment = async ({
   postId,
   authorId,

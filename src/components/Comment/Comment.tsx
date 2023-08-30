@@ -3,9 +3,7 @@
 import { useState, type FC } from "react";
 import ReactMarkdown from "react-markdown";
 import { formatDistance } from "date-fns";
-import Link from "next/link";
 import ru from "date-fns/locale/ru";
-import { RatingControl } from "@/components/RatingControl";
 import {
   type User,
   type Content,
@@ -57,6 +55,8 @@ export const Comment: FC<{
             authorId={author._id}
             authorUsername={author.username}
             authorAvatarSrc={author.avatar.src}
+            votePlusRate={0.2}
+            voteMinusRate={0.2}
           />
           {agoDisplayString}
           {" | "}

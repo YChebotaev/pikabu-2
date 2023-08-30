@@ -83,6 +83,16 @@ export const getUserPosts = async (authorId: string, { page, limit, userId }: { 
   return Promise.all(docs.map(post => getPost(post._id, userId)))
 }
 
+export const getAllUserPosts = async (authorId: string) => {
+  const { docs } = await (await postsDb).find({
+    selector: {
+      authorId
+    }
+  })
+
+  return docs
+}
+
 export const getUserPostsVotedFor = async (authorId: string, userId?: string) => {
   const { docs } = await (await votesDb).find({
     selector: {
