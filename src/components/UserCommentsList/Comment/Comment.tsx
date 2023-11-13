@@ -12,7 +12,16 @@ export const Comment: FC<{
   votesBalance: number;
   createdAt: number;
   authenticated: boolean;
-}> = ({ id, author, content, votesBalance, createdAt, authenticated }) => {
+  votedByMe: boolean;
+}> = ({
+  id,
+  author,
+  content,
+  votesBalance,
+  createdAt,
+  authenticated,
+  votedByMe,
+}) => {
   const agoDisplayString =
     formatDistance(new Date(), createdAt, {
       locale: ru,
@@ -28,7 +37,11 @@ export const Comment: FC<{
       <div>
         <div className="text-sm text-slate-700">
           {authenticated && (
-            <RatingControl commentId={id} initialRating={votesBalance} />
+            <RatingControl
+              commentId={id}
+              initialRating={votesBalance}
+              voted={votedByMe}
+            />
           )}{" "}
           Написал {author.username} {agoDisplayString}
         </div>

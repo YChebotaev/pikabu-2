@@ -23,6 +23,7 @@ export const Children: FC<{
         comments={comment.comments}
         post={post}
         authenticated={authenticated}
+        votedByMe={comment.votedByMe!}
       />
     ))}
   </div>

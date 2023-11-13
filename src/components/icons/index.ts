@@ -1,3 +1,4 @@
+export * from './BlockIcon'
 export * from './BookmarkCheckFillIcon'
 export * from './BookmarkIcon'
 export * from './CommentsIcon'

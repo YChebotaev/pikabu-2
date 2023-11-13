@@ -7,7 +7,7 @@ export const UserCommentsList: FC<{
   authenticated: boolean;
 }> = ({ comments, authenticated }) => (
   <div className="flex flex-col gap-4">
-    {comments.map(({ _id, author, content, votesBalance, createdAt }) => (
+    {comments.map(({ _id, author, content, votesBalance, votedByMe, createdAt }) => (
       <Comment
         key={_id}
         id={_id}
@@ -16,6 +16,7 @@ export const UserCommentsList: FC<{
         votesBalance={votesBalance}
         createdAt={createdAt}
         authenticated={authenticated}
+        votedByMe={votedByMe!}
       />
     ))}
   </div>

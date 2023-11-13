@@ -13,6 +13,17 @@ export const getUserHasVotedForPost = async (postId: string, userId: string) => 
   return vote != null
 }
 
+export const getUserHasVotedForComment = async (commentId: string, userId: string) => {
+  const { docs: [vote] } = await (await votesDb).find({
+    selector: {
+      commentId,
+      authorId: userId
+    }
+  })
+
+  return vote != null
+}
+
 export const getAllVotesForPost = async (postId: string) => {
   const { docs } = await (await votesDb).find({
     selector: {

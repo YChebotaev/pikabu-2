@@ -10,10 +10,8 @@ export const AuthorityControl: FC<{
   authorId: string;
   authorUsername: string;
   authorAvatarSrc: string;
-  bookmarkedByMe: boolean | null;
   votedByMe: boolean | null;
-  votePlusRate: number;
-  voteMinusRate: number;
+  bookmarkedByMe?: boolean | null;
 }> = ({
   authenticated,
   votesBalance,
@@ -21,10 +19,8 @@ export const AuthorityControl: FC<{
   authorId,
   authorUsername,
   authorAvatarSrc,
-  bookmarkedByMe,
   votedByMe,
-  votePlusRate,
-  voteMinusRate,
+  bookmarkedByMe,
 }) => (
   <div className="flex gap-2 text-sm text-slate-700">
     {authenticated && (
@@ -32,11 +28,9 @@ export const AuthorityControl: FC<{
         voted={votedByMe}
         postId={postId}
         initialRating={votesBalance}
-        plusRate={votePlusRate}
-        minusRate={voteMinusRate}
       />
     )}{" "}
-    {authenticated && (
+    {authenticated && bookmarkedByMe != null && (
       <BookmarkControl bookmarked={bookmarkedByMe} postId={postId} />
     )}{" "}
     Написал{" "}

@@ -18,7 +18,7 @@ export default async function Page({
     : undefined;
   const authenticated = sessionUser != null;
   const paramUser = await getUser(user_id);
-  const comments = await getUserResponsesForAllComments(user_id);
+  const comments = await getUserResponsesForAllComments(user_id, sessionUser?._id);
 
   return (
     <SiteLayout authenticated={authenticated}>

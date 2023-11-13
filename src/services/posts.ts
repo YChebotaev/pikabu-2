@@ -13,7 +13,7 @@ export const getPost = async (postId: string, userId?: string): Promise<Post> =>
     ...data,
     votesBalance: await getPostVotesBalance(postId),
     author: await getUser(data.authorId),
-    comments: await getRootCommentsOfPost(postId),
+    comments: await getRootCommentsOfPost(postId, userId),
     commentsCount: await getCommentsCountOfPost(postId),
     bookmarkedByMe: userId ? await hasPostBookmarkedByUser(userId, postId) : null,
     votedByMe: userId ? await getUserHasVotedForPost(postId, userId) : null

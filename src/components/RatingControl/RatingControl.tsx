@@ -1,58 +1,127 @@
 "use client";
 
 import { useState, type FC } from "react";
-import { PlusIcon, MinusIcon } from '@/components/icons'
+import { PlusIcon, MinusIcon, BlockIcon } from "@/components/icons";
+
+const createVoteHandler = <
+  R = { rating: number },
+  B = { direction: "up" | "down" },
+>({
+  url,
+  body,
+  onSuccess,
+  onFail,
+  onComplete,
+}: {
+  url: string;
+  body?: B;
+  onSuccess?(r: R): void;
+  onFail?(e: unknown): void;
+  onComplete?(): void;
+}) => {
+  return async () => {
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        ...(body
+          ? {
+              body: JSON.stringify(body),
+            }
+          : {}),
+      });
+      const data = (await res.json()) as R;
+
+      if (typeof onSuccess === "function") {
+        await onSuccess(data);
+      }
+    } catch (e) {
+      if (typeof onFail === "function") {
+        await onFail(e);
+      }
+    } finally {
+      if (typeof onComplete === "function") {
+        await onComplete();
+      }
+    }
+  };
+};
 
 export const RatingControl: FC<{
   initialRating: number;
   commentId?: string;
   postId?: string;
-  voted: boolean | null
-  plusRate: number
-  minusRate: number
-}> = ({ initialRating, postId, commentId, voted, plusRate, minusRate }) => {
+  voted: boolean | null;
+}> = ({ initialRating, postId, commentId, voted: initialVoted }) => {
   const [rating, setRating] = useState(initialRating);
-  const createVoteHandler = (rate: number) => async () => {
-    if (postId) {
-      const res = await fetch(`/api/posts/${postId}/vote`, {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({ rate }),
-      });
-      const { newPostVotesBalance } = (await res.json()) as {
-        newPostVotesBalance: number;
-      };
+  const [voted, setVoted] = useState(initialVoted);
 
-      setRating(newPostVotesBalance);
-    } else if (commentId) {
-      const res = await fetch(`/api/comments/${commentId}/vote`, {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({ rate }),
-      });
-      const { newCommentVotesBalance } = (await res.json()) as {
-        newCommentVotesBalance: number;
-      };
+  const votePlusHandler = createVoteHandler({
+    url: postId
+      ? `/api/posts/${postId}/vote`
+      : `/api/comments/${commentId}/vote`,
+    body: { direction: "up" },
+    onSuccess({ rating }) {
+      setRating(rating);
+      setVoted(true);
+    },
+  });
 
-      setRating(newCommentVotesBalance);
-    }
-  };
+  const voteMinusHandler = createVoteHandler({
+    url: postId
+      ? `/api/posts/${postId}/vote`
+      : `/api/comments/${commentId}/vote`,
+    body: { direction: "down" },
+    onSuccess({ rating }) {
+      setRating(rating);
+      setVoted(true);
+    },
+  });
+
+  const unvoteHandler = createVoteHandler({
+    url: postId
+      ? `/api/posts/${postId}/unvote`
+      : `/api/comments/${commentId}/unvote`,
+    onSuccess({ rating }) {
+      setRating(rating);
+      setVoted(false);
+    },
+  });
 
   return (
     <div className="inline-flex gap-1 rounded bg-slate-200 border border-slate-200 text-xs">
-      <button
-        className="px-1 rounded font-bold hover:bg-slate-300"
-        onClick={createVoteHandler(plusRate)}
-      >
-        <PlusIcon />
-      </button>
-      <div className="rounded px-2 bg-slate-50">{rating}</div>
-      <button
-        className="px-1 rounded font-bold hover:bg-slate-300"
-        onClick={createVoteHandler(minusRate)}
-      >
-        <MinusIcon />
-      </button>
+      {voted ? (
+        <>
+          <button
+            className="px-1 rounded font-bold hover:bg-slate-300"
+            onClick={unvoteHandler}
+          >
+            <BlockIcon />
+          </button>
+          <div className="rounded px-2 bg-slate-50">{rating}</div>
+          <button
+            className="px-1 rounded font-bold hover:bg-slate-300"
+            onClick={unvoteHandler}
+          >
+            <BlockIcon />
+          </button>
+        </>
+      ) : (
+        <>
+          <button
+            className="px-1 rounded font-bold hover:bg-slate-300"
+            onClick={votePlusHandler}
+          >
+            <PlusIcon />
+          </button>
+          <div className="rounded px-2 bg-slate-50">{rating}</div>
+          <button
+            className="px-1 rounded font-bold hover:bg-slate-300"
+            onClick={voteMinusHandler}
+          >
+            <MinusIcon />
+          </button>
+        </>
+      )}
     </div>
   );
 };

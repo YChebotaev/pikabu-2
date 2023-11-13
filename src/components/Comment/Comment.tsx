@@ -23,6 +23,7 @@ export const Comment: FC<{
   comments: CommentType[];
   post: Post;
   authenticated: boolean;
+  votedByMe: boolean;
 }> = ({
   id,
   author,
@@ -32,6 +33,7 @@ export const Comment: FC<{
   comments,
   post,
   authenticated,
+  votedByMe,
 }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const agoDisplayString =
@@ -55,8 +57,7 @@ export const Comment: FC<{
             authorId={author._id}
             authorUsername={author.username}
             authorAvatarSrc={author.avatar.src}
-            votePlusRate={0.2}
-            voteMinusRate={0.2}
+            votedByMe={votedByMe}
           />
           {agoDisplayString}
           {" | "}

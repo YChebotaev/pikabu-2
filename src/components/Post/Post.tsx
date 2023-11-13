@@ -56,8 +56,6 @@ export const Post: FC<{
           authorAvatarSrc={author.avatar.src}
           votedByMe={votedByMe}
           bookmarkedByMe={bookmarkedByMe}
-          votePlusRate={0.5}
-          voteMinusRate={0.5}
         />
         {agoDisplayString}
         {" | "}

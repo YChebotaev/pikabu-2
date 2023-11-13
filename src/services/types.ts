@@ -9,6 +9,7 @@ export type Comment = {
   content: Content
   votesBalance: number
   comments: Comment[]
+  votedByMe: boolean | null
   createdAt: number
   updatedAt: number | null
 }
